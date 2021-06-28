@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
-/**
- * Created by Chris Bay
- */
 @Controller
 @RequestMapping("eventCategories")
 public class EventCategoryController {
@@ -24,9 +21,11 @@ public class EventCategoryController {
     private EventCategoryRepository eventCategoryRepository;
 
     @GetMapping
-    public String displayAllCategories(Model model) {
+    public String displayAllEvents(Model model) {
         model.addAttribute("title", "All Categories");
         model.addAttribute("categories", eventCategoryRepository.findAll());
+
+
         return "eventCategories/index";
     }
 
@@ -34,13 +33,13 @@ public class EventCategoryController {
     public String renderCreateEventCategoryForm(Model model) {
         model.addAttribute("title", "Create Category");
         model.addAttribute(new EventCategory());
+
         return "eventCategories/create";
+
     }
 
     @PostMapping("create")
-    public String processCreateEventCategoryForm(@Valid @ModelAttribute EventCategory eventCategory,
-                                                 Errors errors, Model model) {
-
+    public String processCreateEventCategoryForm(@Valid @ModelAttribute EventCategory eventCategory, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Create Category");
             model.addAttribute(new EventCategory());
@@ -50,5 +49,4 @@ public class EventCategoryController {
         eventCategoryRepository.save(eventCategory);
         return "redirect:";
     }
-
 }
